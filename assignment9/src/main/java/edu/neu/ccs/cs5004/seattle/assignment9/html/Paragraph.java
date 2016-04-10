@@ -10,7 +10,7 @@ package edu.neu.ccs.cs5004.seattle.assignment9.html;
  *
  * @author yoganandc
  */
-public final class Paragraph extends AbstractElement {
+public class Paragraph extends AbstractElement {
 
   /**
    * Creates a new instance of Paragraph

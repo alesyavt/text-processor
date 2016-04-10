@@ -9,7 +9,8 @@ Headers are section _*titles.*_ The number of `#` symbols *_indica*te_ the _nest
 
 # Paragraphs
 
-Paragraphs are free form text. Paragraphs are *separated* by new lines. 
+<blockquote>Paragraphs are free form text.
+Paragraphs are *separated* by new lines.</blockquote> 
 
 This is the second paragraph in this section
 
