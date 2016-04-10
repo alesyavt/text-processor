@@ -54,10 +54,11 @@ public class Item {
    */
   public String toPrettyString() {
     StringBuilder stringBuilder = new StringBuilder();
+    String valEmphasized = AbstractElement.emphasize(this.val);
     if (this.subList == null) {
-      stringBuilder.append("<li>").append(this.val).append("</li>\n");
+      stringBuilder.append("<li>").append(valEmphasized).append("</li>\n");
     } else {
-      stringBuilder.append("<li>").append(this.val).append("\n");
+      stringBuilder.append("<li>").append(valEmphasized).append("\n");
       stringBuilder.append(this.subList.toPrettyString());
       stringBuilder.append("</li>\n");
     }

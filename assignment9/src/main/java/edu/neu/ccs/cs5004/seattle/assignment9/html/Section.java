@@ -205,7 +205,7 @@ public final class Section extends AbstractElement {
           if (!line.equals("\n")) {
             paragraph.append(line);
           } else {
-            acc.add(Paragraph.createParagraph(paragraph.toString()));
+            acc.add(new Paragraph(paragraph.toString()));
             break;
           }
         }
