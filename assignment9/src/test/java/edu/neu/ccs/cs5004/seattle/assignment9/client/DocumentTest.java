@@ -93,7 +93,7 @@ public class DocumentTest {
         String contents
                 = "Headers appear on a line of their own. A header starts with the one or more occurrences of the symbol `#` followed\n"
                 + "by one space followed by text and ends with a newline. \n"
-                + "Headers are section titles. The number of `#` symbols indicate the nesting of headers.";
+                + "Headers are section titles. The number of `#` symbols indicate the nesting of headers.\n";
         first.add(new Paragraph(contents));
 
         Assert.assertEquals(output1, d1);
@@ -107,7 +107,7 @@ public class DocumentTest {
         Section second = new Section("This is a header at level 2");
         first2.add(second);
         Paragraph p = new Paragraph("Paragraphs are free form text. Paragraphs are separated by new lines. \n"
-                + "This is still the first paragraph in this section");
+                + "This is still the first paragraph in this section\n");
         second.add(p);
         Section third = new Section("Numbered Lists");
         root2.add(third);
@@ -135,14 +135,14 @@ public class DocumentTest {
                 + "<h1>Header at Level 1</h1>\n" + "\n" + "<br />\n" + "\n"
                 + "<p>Headers appear on a line of their own. A header starts with the one or more occurrences of the symbol `#` followed\n"
                 + "by one space followed by text and ends with a newline. \n"
-                + "Headers are section titles. The number of `#` symbols indicate the nesting of headers.</p>\n"
+                + "Headers are section titles. The number of `#` symbols indicate the nesting of headers.\n</p>\n"
                 + "\n" + "</body>\n" + "</html>\n";
         String op2 = "<!DOCTYPE html>\n" + "<html>\n" + "<head>\n" + "  <meta charset=\"utf-8\">\n"
                 + "  <title>test-2.txt</title>\n" + "</head>\n" + "<body>\n" + "\n"
                 + "<h1>Header at Level 1</h1>\n" + "\n" + "<br />\n" + "\n"
                 + "<h2>This is a header at level 2</h2>\n" + "\n"
                 + "<p>Paragraphs are free form text. Paragraphs are separated by new lines. \n"
-                + "This is still the first paragraph in this section</p>\n" + "\n"
+                + "This is still the first paragraph in this section\n</p>\n" + "\n"
                 + "<h1>Numbered Lists</h1>\n" + "\n" + "<ol>\n"
                 + "<li>This is the first item of the outer list</li>\n"
                 + "<li>This is the second item of the outer list\n" + "<ol>\n"
@@ -150,7 +150,9 @@ public class DocumentTest {
                 + "<li>This is the second item of the inner list</li>\n" + "</ol>\n" + "</li>\n"
                 + "<li>This is the third item of the outer list</li>\n" + "</ol>\n" + "\n" + "</body>\n"
                 + "</html>\n";
-
+        System.out.println(op2);
+        System.out.println("--------------");
+        System.out.println(d2.toString());
         Assert.assertEquals(op1, d1.toString());
         Assert.assertEquals(op2, d2.toString());
     }

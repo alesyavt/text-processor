@@ -1,10 +1,10 @@
 # Header at Level 1
 
-## This is a header at level 2 
+## This is a header at level 2
 Paragraphs are free form text. Paragraphs are separated by new lines. 
 This is still the first paragraph in this section
 
-# Numbered Lists 
+# Numbered Lists
 1. This is the first item of the outer list 
 1. This is the second item of the outer list 
   1. This is the first item of the inner list 

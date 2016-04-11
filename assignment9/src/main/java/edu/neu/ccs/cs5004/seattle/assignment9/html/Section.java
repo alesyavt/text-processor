@@ -132,16 +132,17 @@ public final class Section extends AbstractElement {
 
     private void parse(ArrayList<String> lines) {
 
-        boolean getNext = true;
+        String lineRead = null;
         String line = null;
 
         Iterator<String> it = lines.iterator();
         while (it.hasNext()) {
 
-            if (getNext) {
+            if (lineRead == null) {
                 line = it.next();
             } else {
-                getNext = true;
+                line = lineRead;
+                lineRead = null;
             }
 
             // HANDLE BLANKLINE
@@ -154,7 +155,7 @@ public final class Section extends AbstractElement {
 
             } // HANDLE HEADERS
             else if (line.matches(HD_MATCHER)) {
-                getNext = this.handleSection(line, it);
+                lineRead = this.handleSection(line, it);
 
             } // HANDLE LISTS
             else if (line.matches(UL_MATCHER) || line.matches(OL_MATCHER)) {
@@ -214,8 +215,8 @@ public final class Section extends AbstractElement {
         return i;
     }
 
-    private boolean handleSection(String line, Iterator<String> it) {
-        boolean ret = true;
+    private String handleSection(String line, Iterator<String> it) {
+        String ret = null;
 
         // 1. CALCULATE HEADER DEPTH
         int headerDepth = Section.getHeaderDepth(line);
@@ -242,7 +243,7 @@ public final class Section extends AbstractElement {
             if (line.matches(HD_MATCHER)) {
                 int newHeaderDepth = Section.getHeaderDepth(line);
                 if (newHeaderDepth <= newSection.getDepth()) {
-                    ret = false;
+                    ret = line;
                     break;
                 } else {
                     subLines.add(line);
