@@ -261,11 +261,7 @@ public final class Section extends AbstractElement {
         while (it.hasNext()) {
             line = it.next();
             if (!line.equals(NEW_LINE)) {
-                if (line.matches(BQ_MATCHER)) {
-                    newBlock.add(line);
-                } else {
-                    throw new ParseException("Incorrectly formatted blockquote");
-                }
+                newBlock.add(line);
             } else {
                 this.add(new Blockquote(newBlock));
                 break;
