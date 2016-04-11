@@ -53,18 +53,19 @@ public class ParagraphTest {
         String test1
                 = "This paragraph should look like normal *except for this bit* which should be in bold";
         String output1
-                = "This paragraph should look like normal <b>except for this bit</b> which should be in bold";
+                = "<p>This paragraph should look like normal <strong>except for this bit</strong> which should be in bold</p>\n";
         Assert.assertEquals(output1, new Paragraph(test1).toPrettyString());
 
         String test2 = "Nothing in this paragraph should be in bold";
-        Assert.assertEquals(test2, new Paragraph(test2).toPrettyString());
+        String output2 = "<p>Nothing in this paragraph should be in bold</p>\n";
+        Assert.assertEquals(output2, new Paragraph(test2).toPrettyString());
 
         String test3 = "This paragraph *should have two* sections in *bold*";
-        String output3 = "This paragraph <b>should have two</b> sections in <b>bold</b>";
+        String output3 = "<p>This paragraph <strong>should have two</strong> sections in <strong>bold</strong></p>\n";
         Assert.assertEquals(output3, new Paragraph(test3).toPrettyString());
 
         String test4 = "The rest of this sentence after this point *should be in bold";
-        String output4 = "The rest of this sentence after this point <b>should be in bold</b>";
+        String output4 = "<p>The rest of this sentence after this point <strong>should be in bold</strong></p>\n";
         Assert.assertEquals(output4, new Paragraph(test4).toPrettyString());
     }
 
