@@ -158,7 +158,7 @@ public class DocumentTest {
     }
 
     @Test
-    public void testMain() throws IOException {
+    public void testMain() {
         Path p1 = FileSystems.getDefault().getPath("test-1.html");
         Path p2 = FileSystems.getDefault().getPath("test-2.html");
 
@@ -174,9 +174,17 @@ public class DocumentTest {
             while ((line = reader.readLine()) != null) {
                 fileContents += line + "\n";
             }
+        } catch (IOException e) {
+            System.err.println("Error while reading file");
         } finally {
             if (reader != null) {
-                reader.close();
+
+                try {
+                    reader.close();;
+                } catch (IOException e) {
+                    System.err.println("Error while closing file");
+                }
+
             }
         }
 
