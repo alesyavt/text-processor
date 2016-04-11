@@ -86,20 +86,6 @@ public class Blockquote extends AbstractParagraph {
         return stringBuilder.toString();
     }
 
-    public static void main(String[] args) {
-        List<String> test = new ArrayList<>();
-        test.add("> What are the resources allocated?");
-        test.add(">> Are you asking in terms of headcount or machines?");
-        test.add("just text");
-        test.add(">>>Headcount");
-        test.add("more text");
-        test.add(">>>>> jump from 2nd to 5th");
-        test.add("> 1st level again");
-
-        Blockquote bq = new Blockquote(test);
-        System.out.println(bq.toPrettyString());
-    }
-
     /**
      * {@inheritDoc }
      */
