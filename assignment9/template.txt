@@ -33,3 +33,10 @@ We can nest ordered lists by adding 2 spaces followed by the same special charac
   1. This is the second item of the inner list 
 1. This is the third item of the outer list
 
+
+> What are the resources allocated? 
+>> Are you asking in terms of headcount or machines? 
+>>> Headcount
+> level 1 again
+
+
