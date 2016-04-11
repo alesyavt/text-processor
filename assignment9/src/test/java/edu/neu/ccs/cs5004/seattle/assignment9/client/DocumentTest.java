@@ -180,7 +180,7 @@ public class DocumentTest {
             if (reader != null) {
 
                 try {
-                    reader.close();;
+                    reader.close();
                 } catch (IOException e) {
                     System.err.println("Error while closing file");
                 }
