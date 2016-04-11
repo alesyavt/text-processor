@@ -56,13 +56,19 @@ public abstract class AbstractElement {
      */
     public abstract String toPrettyString();
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 59 * hash + Objects.hashCode(this.depth);
+        hash = 79 * hash + Objects.hashCode(this.depth);
         return hash;
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

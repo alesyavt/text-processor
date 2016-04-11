@@ -1,0 +1,6 @@
+# Header at Level 1
+
+Headers appear on a line of their own. A header starts with the one or more occurrences of the symbol `#` followed
+by one space followed by text and ends with a newline. 
+Headers are section titles. The number of `#` symbols indicate the nesting of headers.
+

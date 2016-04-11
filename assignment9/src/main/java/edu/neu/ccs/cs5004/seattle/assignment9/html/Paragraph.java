@@ -1,5 +1,7 @@
 package edu.neu.ccs.cs5004.seattle.assignment9.html;
 
+import java.util.Objects;
+
 /*
  * To change this license header, choose License Headers in Project Properties. To change this
  * template file, choose Tools | Templates and open the template in the editor.
@@ -19,7 +21,7 @@ public class Paragraph extends AbstractParagraph {
      * @param value The contents of this paragraph.
      * @throws NullPointerException when value is null
      */
-    Paragraph(String value) {
+    public Paragraph(String value) {
         if (value == null) {
             throw new NullPointerException();
         }
@@ -43,6 +45,31 @@ public class Paragraph extends AbstractParagraph {
         StringBuilder stringBuilder = new StringBuilder();
         return stringBuilder.append("<p>").append(AbstractElement.emphasize(AbstractParagraph.hyperLinkify(this.getValue())))
                 .append("</p>\n").toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.value);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Paragraph other = (Paragraph) obj;
+        if (!Objects.equals(this.value, other.value)) {
+            return false;
+        }
+        return true;
     }
 
 }
