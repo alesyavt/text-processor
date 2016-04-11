@@ -17,6 +17,15 @@ import java.util.Objects;
  */
 public final class Section extends AbstractElement {
 
+    private static final String HL_MATCHER = "^\\*\\*\\*\\*\\**\\ *\\n$";
+    private static final String BQ_MATCHER = "^>+\\ .*\\n$";
+    private static final String HD_MATCHER = "^#+\\ .*\\n$";
+    private static final String UL_MATCHER = "^\\*\\ .*\\n$";
+    private static final String OL_MATCHER = "^1\\.\\ .*\\n$";
+    private static final String NEW_LINE = "\n";
+    private static final char CHAR_SPACE = ' ';
+    private static final char CHAR_POUND = '#';
+
     private final List<AbstractElement> nodes;
     private final String value;
 
@@ -38,9 +47,9 @@ public final class Section extends AbstractElement {
         this.value = null;
         this.nodes = new ArrayList<>();
         String lastEl = lines.remove(lines.size() - 1);
-        lastEl = lastEl + "\n";
+        lastEl = lastEl + NEW_LINE;
         lines.add(lastEl);
-        lines.add("\n");
+        lines.add(NEW_LINE);
         parse(lines);
     }
 
@@ -113,20 +122,12 @@ public final class Section extends AbstractElement {
         }
         for (AbstractElement n : this.nodes) {
             if (this.getDepth().equals(n.getDepth())) {
-                stringBuilder.append(n.toPrettyString()).append("\n");
+                stringBuilder.append(n.toPrettyString()).append(NEW_LINE);
             } else {
                 stringBuilder.append(n.toPrettyString());
             }
         }
         return stringBuilder.toString();
-    }
-
-    private static int getHeaderDepth(String line) {
-        int i = 0;
-        while (line.charAt(i) == '#') {
-            i++;
-        }
-        return i;
     }
 
     private void parse(ArrayList<String> lines) {
@@ -144,83 +145,151 @@ public final class Section extends AbstractElement {
             }
 
             // HANDLE BLANKLINE
-            if (line.equals("\n")) {
+            if (line.equals(NEW_LINE)) {
                 this.add(new BlankLine());
 
+            } // HANDLE <HR> 
+            else if (line.matches(HL_MATCHER)) {
+                this.add(new HorizontalLine());
+
             } // HANDLE HEADERS
-            else if (line.startsWith("#")) {
+            else if (line.matches(HD_MATCHER)) {
+                getNext = this.handleSection(line, it);
 
-                // 1. CALCULATE HEADER DEPTH
-                int headerDepth = Section.getHeaderDepth(line);
-
-                // 2. CREATE HIDDEN SECTIONS (IF REQUIRED)
-                int depthDiff = headerDepth - this.getDepth();
-                Section last = this;
-                while (depthDiff > 1) {
-                    Section s = new Section();
-                    last.add(s);
-                    last = s;
-                    depthDiff--;
-                }
-
-                // 3. EXTRACT THE CONTENTS OF HEADER OF THIS NEW SECTION
-                String headerPrefix = line.substring(0, headerDepth);
-                String headerContent = line.substring(headerDepth + 1, line.indexOf("\n"));
-                Section newSection = new Section(headerContent);
-                last.add(newSection);
-
-                // 4. DETERMINE THE NUMBER OF LINES CONTAINED IN THIS SECTION
-                ArrayList<String> subLines = new ArrayList<>();
-                while (it.hasNext()) {
-                    line = it.next();
-                    if (line.startsWith("#")) {
-                        int newHeaderDepth = Section.getHeaderDepth(line);
-                        if (newHeaderDepth <= newSection.getDepth()) {
-                            getNext = false;
-                            break;
-                        } else {
-                            subLines.add(line);
-                        }
-                    } else {
-                        subLines.add(line);
-                    }
-                }
-                newSection.parse(subLines);
             } // HANDLE LISTS
-            else if (line.startsWith("1. ") || line.startsWith("* ")) {
-                List<String> listLines = new ArrayList<>();
-                listLines.add(line);
-                while (it.hasNext()) {
-                    line = it.next();
-                    boolean cond1 = !line.trim().startsWith("1. ");
-                    boolean cond2 = !line.trim().startsWith("* ");
-                    if (cond1 && cond2 && !line.equals("\n")) {
-                        throw new ParseException("Incorrectly formatted list");
-                    }
-                    if (!line.equals("\n")) {
-                        listLines.add(line);
-                    } else {
-                        this.add(AbstractList.createList(listLines));
-                        break;
-                    }
-                }
+            else if (line.matches(UL_MATCHER) || line.matches(OL_MATCHER)) {
+                this.handleList(line, it);
+
+            } // HANDLE BLOCKQUOTE 
+            else if (line.matches(Section.BQ_MATCHER)) {
+                this.handleBlockquote(line, it);
+
             } // HANDLE PARAGRAPHS
             else {
-                StringBuilder paragraph = new StringBuilder();
-                paragraph.append(line);
-                while (it.hasNext()) {
-                    line = it.next();
-                    if (!line.equals("\n")) {
-                        paragraph.append(line);
-                    } else {
-                        this.add(new Paragraph(paragraph.toString()));
-                        break;
-                    }
-                }
+                this.handleParagraph(line, it);
             }
         }
     }
 
+    private void handleList(String line, Iterator<String> it) {
+        List<String> listLines = new ArrayList<>();
+        listLines.add(line);
+        int prevSpaces = 0;
+        while (it.hasNext()) {
+            line = it.next();
+
+            // VALIDATE SPACING
+            int curSpaces = 0;
+            while (curSpaces < line.length() && line.charAt(curSpaces) == CHAR_SPACE) {
+                curSpaces++;
+            }
+            if (prevSpaces % 2 != 0 || (curSpaces > prevSpaces && (curSpaces - prevSpaces) != 2)) {
+                throw new ParseException("Incorrectly formatted list");
+            } else {
+                prevSpaces = curSpaces;
+            }
+
+            // VALIDATE OTHER FORMATTING
+            boolean cond1 = !line.trim().concat(NEW_LINE).matches(OL_MATCHER);
+            boolean cond2 = !line.trim().concat(NEW_LINE).matches(UL_MATCHER);
+            if (cond1 && cond2 && !line.equals(NEW_LINE)) {
+                throw new ParseException("Incorrectly formatted list");
+            }
+
+            // CHECK IF END OF LIST
+            if (!line.equals(NEW_LINE)) {
+                listLines.add(line);
+            } else {
+                this.add(AbstractList.createList(listLines));
+                break;
+            }
+        }
+    }
+
+    private static int getHeaderDepth(String line) {
+        int i = 0;
+        while (line.charAt(i) == CHAR_POUND) {
+            i++;
+        }
+        return i;
+    }
+
+    private boolean handleSection(String line, Iterator<String> it) {
+        boolean ret = true;
+
+        // 1. CALCULATE HEADER DEPTH
+        int headerDepth = Section.getHeaderDepth(line);
+
+        // 2. CREATE HIDDEN SECTIONS (IF REQUIRED)
+        int depthDiff = headerDepth - this.getDepth();
+        Section last = this;
+        while (depthDiff > 1) {
+            Section s = new Section();
+            last.add(s);
+            last = s;
+            depthDiff--;
+        }
+
+        // 3. EXTRACT THE CONTENTS OF HEADER OF THIS NEW SECTION
+        String headerContent = line.substring(headerDepth + 1, line.indexOf(NEW_LINE));
+        Section newSection = new Section(headerContent);
+        last.add(newSection);
+
+        // 4. DETERMINE THE NUMBER OF LINES CONTAINED IN THIS SECTION
+        ArrayList<String> subLines = new ArrayList<>();
+        while (it.hasNext()) {
+            line = it.next();
+            if (line.matches(HD_MATCHER)) {
+                int newHeaderDepth = Section.getHeaderDepth(line);
+                if (newHeaderDepth <= newSection.getDepth()) {
+                    ret = false;
+                    break;
+                } else {
+                    subLines.add(line);
+                }
+            } else {
+                subLines.add(line);
+            }
+        }
+        newSection.parse(subLines);
+        return ret;
+    }
+
+    private void handleBlockquote(String line, Iterator<String> it) {
+        List<String> newBlock = new ArrayList<>();
+        newBlock.add(line);
+        while (it.hasNext()) {
+            line = it.next();
+            if (!line.equals(NEW_LINE)) {
+                if (line.matches(BQ_MATCHER)) {
+                    newBlock.add(line);
+                } else {
+                    throw new ParseException("Incorrectly formatted blockquote");
+                }
+            } else {
+                this.add(new Blockquote(newBlock));
+                break;
+            }
+        }
+    }
+
+    private void handleParagraph(String line, Iterator<String> it) {
+        StringBuilder paragraph = new StringBuilder();
+        paragraph.append(line);
+        while (it.hasNext()) {
+            line = it.next();
+            if (!line.equals(NEW_LINE)) {
+                paragraph.append(line);
+            } else {
+                this.add(new Paragraph(paragraph.toString()));
+                break;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public int hashCode() {
         int hash = super.hashCode();
@@ -228,6 +297,9 @@ public final class Section extends AbstractElement {
         return hash;
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
