@@ -136,6 +136,32 @@ public class AbstractListTest {
         output4.addItem(new Item("Element 12"));
 
         Assert.assertEquals(output4, ul);
+
+        List<String> list3 = new ArrayList<>();
+        list3.add("1. one");
+        list3.add("1. two");
+        list3.add("  * inner one");
+        list3.add("  * inner two");
+        list3.add("  1. inner three");
+        list3.add("  1. inner four");
+        list3.add("  * inner five");
+        list3.add("1. three");
+        AbstractList mixed = AbstractList.createList(list3);
+        System.out.println("");
+        OrderedList output5 = new OrderedList();
+        output5.addItem(new Item("one"));
+        Item item7 = new Item("two");
+        output5.addItem(item7);
+        UnorderedList sublist6 = new UnorderedList();
+        item7.setSubList(sublist6);
+        sublist6.addItem(new Item("inner one"));
+        sublist6.addItem(new Item("inner two"));
+        sublist6.mixedList = new OrderedList();
+        sublist6.mixedList.addItem(new Item("inner three"));
+        sublist6.mixedList.addItem(new Item("inner four"));
+        sublist6.mixedList.mixedList = new UnorderedList();
+        sublist6.mixedList.mixedList.addItem(new Item("inner five"));
+        output5.addItem(new Item("three"));
     }
 
     @Test
