@@ -59,7 +59,7 @@ public class OrderedList extends AbstractList {
       } else if (j > 0) { /// un-nested mixed list
         this.mixedList = new UnorderedList(input, leadingSpace);
       } else if (k > 0) {
-        this.mixedList = new UnorderedList(input.subList(k, i), leadingSpace);
+        this.mixedList = new UnorderedList(input.subList(k, input.size()), leadingSpace);
         String itemLeadingSpace = leadingSpace + AbstractList.NESTING_SPACES;
         AbstractList sublist = null;
         if (input.get(0).substring(itemLeadingSpace.length())
