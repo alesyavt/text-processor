@@ -30,11 +30,6 @@ public class BlankLineTest {
     }
 
     @Test
-    public void testGetInstance() {
-        Assert.assertEquals(this.b, new BlankLine());
-    }
-
-    @Test
     public void testToPrettyString() {
         Assert.assertEquals("<br />\n", this.b.toPrettyString());
     }

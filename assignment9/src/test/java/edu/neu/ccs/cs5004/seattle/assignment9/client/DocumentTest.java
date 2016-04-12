@@ -150,9 +150,6 @@ public class DocumentTest {
                 + "<li>This is the second item of the inner list</li>\n" + "</ol>\n" + "</li>\n"
                 + "<li>This is the third item of the outer list</li>\n" + "</ol>\n" + "\n" + "</body>\n"
                 + "</html>\n";
-        System.out.println(op2);
-        System.out.println("--------------");
-        System.out.println(d2.toString());
         Assert.assertEquals(op1, d1.toString());
         Assert.assertEquals(op2, d2.toString());
     }
