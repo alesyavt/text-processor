@@ -21,7 +21,6 @@ public abstract class AbstractList extends AbstractElement {
 
   protected final List<Item> itemList;
   protected AbstractList mixedList;
-  protected String leadingSpace;
 
   /**
    * Creates an html list
@@ -57,7 +56,6 @@ public abstract class AbstractList extends AbstractElement {
   protected AbstractList(String leadingSpace) {
     this.itemList = new ArrayList<>();
     this.mixedList = null;
-    this.leadingSpace = leadingSpace;
   }
 
   /**
