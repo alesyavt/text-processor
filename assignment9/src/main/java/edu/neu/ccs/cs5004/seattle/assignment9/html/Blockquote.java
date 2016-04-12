@@ -54,23 +54,22 @@ public class Blockquote extends AbstractParagraph {
   }
 
   /**
-   * Helper for creating regular/nested blockquotes
+   * Helper for creating this blockquote with the given block
    *
    * @param block the list to be processed and added to this blockquote
    * @param index an index tracker for keeping track of block's strings
    */
   private void bqHelper(List<String> block, int index) {
-    if ((index < block.size()) && (specialCount(block.get(index)) > this.specialCharCount)) {
-      bqHelper(block, index + 1);
-    } else if (index > 0) {
-      this.list.add(new Blockquote(block.subList(0, index), this.specialCharCount + 1));
-      if (index < block.size()) {
+    if (!block.isEmpty()) {
+      if ((index < block.size()) && (specialCount(block.get(index)) > this.specialCharCount)) {
+        bqHelper(block, index + 1);
+      } else if (index > 0) {
+        this.list.add(new Blockquote(block.subList(0, index), this.specialCharCount + 1));
+        bqHelper(block.subList(index, block.size()), 0);
+      } else {
         addParag(block.get(0));
-        bqHelper(block.subList(index + 1, block.size()), 0);
+        bqHelper(block.subList(1, block.size()), 0);
       }
-    } else if (!block.isEmpty()) {
-      addParag(block.get(0));
-      bqHelper(block.subList(1, block.size()), 0);
     }
   }
 
