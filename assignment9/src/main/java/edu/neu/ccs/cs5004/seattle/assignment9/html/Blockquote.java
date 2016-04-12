@@ -49,11 +49,8 @@ public class Blockquote extends AbstractParagraph {
    *
    * @param s the string to be added as a paragraph to this blockquote
    */
-  private void addParag(String s) {
-    StringBuilder parag = new StringBuilder();
-    parag.append(s.substring(this.specialCharCount));
-
-    this.list.add(new Paragraph(parag.toString()));
+  private void addParag(String parag) {
+    this.list.add(new Paragraph(parag.substring(this.specialCharCount)));
   }
 
   /**
