@@ -96,10 +96,10 @@ public abstract class AbstractElement {
     for (int i = 0; i < (text.length() - 1); i++) {
       if ((text.charAt(i) == AbstractElement.STAR)
           && (text.charAt(i + 1) != AbstractElement.SPACE)) {
-        AbstractElement.replace(text, AbstractElement.STAR, AbstractElement.BOLD_BEG,
+        AbstractElement.emphasisCharToHTML(text, AbstractElement.STAR, AbstractElement.BOLD_BEG,
             AbstractElement.BOLD_END, i);
       } else if (text.charAt(i) == AbstractElement.UNDERSCORE) {
-        AbstractElement.replace(text, AbstractElement.UNDERSCORE, AbstractElement.EM_BEG,
+        AbstractElement.emphasisCharToHTML(text, AbstractElement.UNDERSCORE, AbstractElement.EM_BEG,
             AbstractElement.EM_END, i);
       }
     }
@@ -107,15 +107,18 @@ public abstract class AbstractElement {
   }
 
   /**
+   * Replaces the text enclosed by the "*" and "_" characters to corresponding html tags for bolded
+   * and italicized text. An opening star must not be followed by a space, and a closing star must
+   * not be preceded by a space.
    *
-   * @param text
-   * @param specialChar
-   * @param tagBeg
-   * @param tagEnd
-   * @param start
+   * @param text the string to be emphasized
+   * @param specialChar the character representing type of emphasis
+   * @param tagBeg the beginning html tag which corresponds to the specialChar
+   * @param tagEnd the end html tag which corresponds to the specialChar
+   * @param start the index where to begin parsing text
    */
-  private static void replace(StringBuilder text, char specialChar, String tagBeg, String tagEnd,
-      int start) {
+  private static void emphasisCharToHTML(StringBuilder text, char specialChar, String tagBeg,
+      String tagEnd, int start) {
     text.replace(start, start + 1, tagBeg);
     int end = AbstractElement.findEnd(text, specialChar, start + tagBeg.length());
     if (end != -1) {

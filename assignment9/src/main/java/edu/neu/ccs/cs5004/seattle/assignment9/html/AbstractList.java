@@ -72,11 +72,11 @@ public abstract class AbstractList extends AbstractElement {
   }
 
   /**
-   * !!!!!
+   * Creates an abstract list to be assigned to an item as a sublist
    *
-   * @param input
-   * @param leadingSpace
-   * @return
+   * @param input the contents of the list, formatted with the special template characters
+   * @param leadingSpace the leading space of the first item in input
+   * @return an an abstract list created from input
    */
   protected AbstractList addSublist(List<String> input, String leadingSpace) {
     if (input.get(0).substring(leadingSpace.length()).startsWith(AbstractList.UNORDERED_CHAR)) {

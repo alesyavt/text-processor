@@ -13,7 +13,6 @@ public class Blockquote extends AbstractParagraph {
 
   private List<AbstractParagraph> list;
   private int specialCharCount;
-  private final static String SPECIAL_CHAR = ">";
 
   /**
    *
