@@ -17,16 +17,15 @@ public class UnorderedList extends AbstractList {
     super("");
   }
 
-  public UnorderedList(List<String> input, String leadingSpace) {
+  UnorderedList(List<String> input, String leadingSpace) {
     super(leadingSpace);
-    listHelper(this, null, input, leadingSpace, AbstractList.UNORDERED_CHAR);
+    listHelper(null, input, leadingSpace);
   }
 
-  protected void listHelper(AbstractList resultingList, Item lastItem, List<String> input,
-      String leadingSpace, String specialChar) {
+  protected void listHelper(Item lastItem, List<String> input, String leadingSpace) {
     if (!input.isEmpty()) {
-      int i = 0;
-      int k = 0;
+      int i = 0; //
+      int k = 0; // mixed list start index
       while ((i < input.size())
           && !input.get(i).startsWith(leadingSpace + AbstractList.UNORDERED_CHAR)) {
         if (input.get(i).startsWith(leadingSpace + AbstractList.ORDERED_CHAR)) {
@@ -40,43 +39,30 @@ public class UnorderedList extends AbstractList {
         j++;
       }
 
-      if (i == 0) { // item has no sublist
+      if (i == 0) { // first line is the next item in the current list
         Item item =
             new Item(input.get(0).substring((leadingSpace + AbstractList.UNORDERED_CHAR).length()));
         this.list.add(item);
-        listHelper(resultingList, item, input.subList(1, input.size()), leadingSpace,
-            AbstractList.UNORDERED_CHAR);
-      } else if (j > 0) { /// un-nested mixed list
-        this.mixedList = new OrderedList(input, leadingSpace);
-      } else if (k > 0) {
-        this.mixedList = new OrderedList(input.subList(k, input.size()), leadingSpace);
-        String itemLeadingSpace = leadingSpace + AbstractList.NESTING_SPACES;
-        AbstractList sublist = null;
-        if (input.get(0).substring(itemLeadingSpace.length())
-            .startsWith(AbstractList.UNORDERED_CHAR)) {
-          sublist = new UnorderedList(input.subList(0, k), itemLeadingSpace);
-        } else {
-          sublist = new OrderedList(input.subList(0, k), itemLeadingSpace);
-        }
-        lastItem.setSubList(sublist);
-      } else {
-        String itemLeadingSpace = leadingSpace + AbstractList.NESTING_SPACES;
-        AbstractList sublist = null;
-        if (input.get(0).substring(itemLeadingSpace.length())
-            .startsWith(AbstractList.UNORDERED_CHAR)) {
-          sublist = new UnorderedList(input.subList(0, i), itemLeadingSpace);
-        } else {
-          sublist = new OrderedList(input.subList(0, i), itemLeadingSpace);
-        }
-        lastItem.setSubList(sublist);
+        listHelper(item, input.subList(1, input.size()), leadingSpace);
 
+      } else if (j > 0) { /// un-nested mixed list starts with first line
+        this.mixedList = new OrderedList(input, leadingSpace);
+
+      } else if (k > 0) { // un-nested mixed list starting at line k, with nested list (0,k)
+        this.mixedList = new OrderedList(input.subList(k, input.size()), leadingSpace);
+        lastItem.setSubList(
+            addSublist(input.subList(0, k), leadingSpace + AbstractList.NESTING_SPACES));
+
+      } else { // nested sublist (0,i) and continuing current list (i,end)
+        lastItem.setSubList(
+            addSublist(input.subList(0, i), leadingSpace + AbstractList.NESTING_SPACES));
         if ((i) < input.size()) {
-          listHelper(resultingList, lastItem, input.subList(i, input.size()), leadingSpace,
-              AbstractList.UNORDERED_CHAR);
+          listHelper(lastItem, input.subList(i, input.size()), leadingSpace);
         }
       }
     }
   }
+
 
 
   /**

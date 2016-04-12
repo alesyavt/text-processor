@@ -19,22 +19,19 @@ public class OrderedList extends AbstractList {
 
   public OrderedList(List<String> input, String leadingSpace) {
     super(leadingSpace);
-    listHelper(this, null, input, leadingSpace, AbstractList.ORDERED_CHAR);
+    listHelper(null, input, leadingSpace);
   }
 
 
   /**
    *
-   * @param resultingList an accumulator for the input list elements that have been converted into
-   *        html structured format
    * @param lastItem the most recently added item of resultingList
    * @param input a list of strings formatted in html list-template style
    * @param leadingSpace the leading space of the list item, including special characters "1." or
    *        "* "
    */
   // @Override
-  protected void listHelper(AbstractList resultingList, Item lastItem, List<String> input,
-      String leadingSpace, String specialChar) {
+  protected void listHelper(Item lastItem, List<String> input, String leadingSpace) {
     if (!input.isEmpty()) {
       int i = 0;
       int k = 0;
@@ -54,34 +51,21 @@ public class OrderedList extends AbstractList {
         Item item =
             new Item(input.get(0).substring((leadingSpace + AbstractList.ORDERED_CHAR).length()));
         this.list.add(item);
-        listHelper(resultingList, item, input.subList(1, input.size()), leadingSpace,
-            AbstractList.ORDERED_CHAR);
+        listHelper(item, input.subList(1, input.size()), leadingSpace);
+
       } else if (j > 0) { /// un-nested mixed list
         this.mixedList = new UnorderedList(input, leadingSpace);
+
       } else if (k > 0) {
         this.mixedList = new UnorderedList(input.subList(k, input.size()), leadingSpace);
-        String itemLeadingSpace = leadingSpace + AbstractList.NESTING_SPACES;
-        AbstractList sublist = null;
-        if (input.get(0).substring(itemLeadingSpace.length())
-            .startsWith(AbstractList.ORDERED_CHAR)) {
-          sublist = new OrderedList(input.subList(0, k), itemLeadingSpace);
-        } else {
-          sublist = new UnorderedList(input.subList(0, k), itemLeadingSpace);
-        }
-        lastItem.setSubList(sublist);
+        lastItem.setSubList(
+            addSublist(input.subList(0, k), leadingSpace + AbstractList.NESTING_SPACES));
+
       } else {
-        String itemLeadingSpace = leadingSpace + AbstractList.NESTING_SPACES;
-        AbstractList sublist = null;
-        if (input.get(0).substring(itemLeadingSpace.length())
-            .startsWith(AbstractList.ORDERED_CHAR)) {
-          sublist = new OrderedList(input.subList(0, i), itemLeadingSpace);
-        } else {
-          sublist = new UnorderedList(input.subList(0, i), itemLeadingSpace);
-        }
-        lastItem.setSubList(sublist);
+        lastItem.setSubList(
+            addSublist(input.subList(0, i), leadingSpace + AbstractList.NESTING_SPACES));
         if ((i) < input.size()) {
-          listHelper(resultingList, lastItem, input.subList(i, input.size()), leadingSpace,
-              AbstractList.ORDERED_CHAR);
+          listHelper(lastItem, input.subList(i, input.size()), leadingSpace);
         }
       }
     }
