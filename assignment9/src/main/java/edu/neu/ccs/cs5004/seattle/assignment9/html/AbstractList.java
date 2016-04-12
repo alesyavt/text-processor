@@ -95,6 +95,7 @@ public abstract class AbstractList extends AbstractElement {
     final int prime = 31;
     int result = super.hashCode();
     result = (prime * result) + ((this.itemList == null) ? 0 : this.itemList.hashCode());
+    result = (prime * result) + ((this.mixedList == null) ? 0 : this.mixedList.hashCode());
     return result;
   }
 
@@ -119,6 +120,13 @@ public abstract class AbstractList extends AbstractElement {
         return false;
       }
     } else if (!this.itemList.equals(other.itemList)) {
+      return false;
+    }
+    if (this.mixedList == null) {
+      if (other.mixedList != null) {
+        return false;
+      }
+    } else if (!this.mixedList.equals(other.mixedList)) {
       return false;
     }
     return true;
