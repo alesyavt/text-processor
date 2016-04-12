@@ -9,4 +9,10 @@
   * inner tfive
 1. three
 
+> What are the resources allocated? 
+>> Are you asking in terms of headcount or machines? 
+>>> Headcount
 
+> What are the resources allocated? 
+> Are you asking in terms of headcount or machines? 
+> Headcount

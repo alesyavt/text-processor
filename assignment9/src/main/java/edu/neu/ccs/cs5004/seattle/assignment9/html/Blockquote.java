@@ -18,46 +18,33 @@ public class Blockquote extends AbstractParagraph {
     this.list = new ArrayList<>();
     this.specialCharCount = specialCount;
     if (specialCount(block.get(0)) == this.specialCharCount) {
-      int paragIndex = addParag(block);
-      bqHelper(block.subList(paragIndex, block.size()), 0);
+      addParag(block);
+      bqHelper(block.subList(1, block.size()), 0);
     } else {
       bqHelper(block, 0);
     }
   }
 
-  private int addParag(List<String> block) {
-    int paragIndex = 1;
+  private void addParag(List<String> block) {
     StringBuilder parag = new StringBuilder();
     parag.append(block.get(0).substring(this.specialCharCount));
-    while ((paragIndex < block.size())
-        && (!block.get(paragIndex).startsWith(Blockquote.SPECIAL_CHAR)
-            || (specialCount(block.get(paragIndex)) == this.specialCharCount))) {
-      if (specialCount(block.get(paragIndex)) == -1) {
-        (parag.append(" ")).append(block.get(paragIndex));
-      } else {
-        parag.append(block.get(paragIndex).substring(this.specialCharCount));
-      }
-      paragIndex++;
-    }
+
     this.list.add(new Paragraph(parag.toString()));
-    return paragIndex;
   }
 
   private void bqHelper(List<String> block, int index) {
-    // if (!block.isEmpty()) {
     if ((index < block.size()) && (specialCount(block.get(index)) > this.specialCharCount)) {
       bqHelper(block, index + 1);
     } else if (index > 0) {
       this.list.add(new Blockquote(block.subList(0, index), this.specialCharCount + 1));
       if (index < block.size()) {
-        int paragIndex = addParag(block.subList(index, block.size()));
-        bqHelper(block.subList(paragIndex + index, block.size()), 0);
+        addParag(block.subList(index, block.size()));
+        bqHelper(block.subList(index + 1, block.size()), 0);
       }
     } else if (!block.isEmpty()) {
-      int paragIndex = addParag(block.subList(index, block.size()));
-      bqHelper(block.subList(paragIndex, block.size()), 0);
+      addParag(block.subList(index, block.size()));
+      bqHelper(block.subList(1, block.size()), 0);
     }
-    // }
   }
 
   private int specialCount(String s) {
