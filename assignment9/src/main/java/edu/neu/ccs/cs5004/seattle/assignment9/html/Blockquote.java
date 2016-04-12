@@ -15,8 +15,10 @@ public class Blockquote extends AbstractParagraph {
   private int specialCharCount;
 
   /**
+   * Creates a blockquote with the given block
    *
-   * @param block
+   * @param block a list of strings beginning with one or more blockquote special characters ">",
+   *        followed by a space. Each ">" represents an extra nesting level of the blockquote
    */
   public Blockquote(List<String> block) {
     this(block, 1);
@@ -24,14 +26,15 @@ public class Blockquote extends AbstractParagraph {
 
   /**
    *
-   * @param block
-   * @param specialCount
+   * @param block a list of strings beginning with one or more blockquote special characters ">",
+   *        followed by a space. Each ">" represents an extra nesting level of the blockquote
+   * @param specialCount the nesting level of this blockquote
    */
   Blockquote(List<String> block, int specialCount) {
     this.list = new ArrayList<>();
     this.specialCharCount = specialCount;
     if (specialCount(block.get(0)) == this.specialCharCount) {
-      addParag(block);
+      addParag(block.get(0));
       bqHelper(block.subList(1, block.size()), 0);
     } else {
       bqHelper(block, 0);
@@ -40,20 +43,22 @@ public class Blockquote extends AbstractParagraph {
 
 
   /**
+   * Adds the given string as a paragraph to this blockquote
    *
-   * @param block
+   * @param s the string to be added as a paragraph to this blockquote
    */
-  private void addParag(List<String> block) {
+  private void addParag(String s) {
     StringBuilder parag = new StringBuilder();
-    parag.append(block.get(0).substring(this.specialCharCount));
+    parag.append(s.substring(this.specialCharCount));
 
     this.list.add(new Paragraph(parag.toString()));
   }
 
   /**
+   * Helper for creating regular/nested blockquotes
    *
-   * @param block
-   * @param index
+   * @param block the list to be processed and added to this blockquote
+   * @param index an index tracker for keeping track of block's strings
    */
   private void bqHelper(List<String> block, int index) {
     if ((index < block.size()) && (specialCount(block.get(index)) > this.specialCharCount)) {
@@ -61,20 +66,21 @@ public class Blockquote extends AbstractParagraph {
     } else if (index > 0) {
       this.list.add(new Blockquote(block.subList(0, index), this.specialCharCount + 1));
       if (index < block.size()) {
-        addParag(block.subList(index, block.size()));
+        addParag(block.get(0));
         bqHelper(block.subList(index + 1, block.size()), 0);
       }
     } else if (!block.isEmpty()) {
-      addParag(block.subList(index, block.size()));
+      addParag(block.get(0));
       bqHelper(block.subList(1, block.size()), 0);
     }
   }
 
 
   /**
+   * Return the count of ">" at the beginning of given string s
    *
-   * @param s
-   * @return
+   * @param s a string beginning with one or more ">" followed by a space
+   * @return the number of ">" that s begins with
    */
   private int specialCount(String s) {
     int specialCount = 0;
