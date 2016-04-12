@@ -37,8 +37,12 @@ public class OrderedList extends AbstractList {
       String leadingSpace, String specialChar) {
     if (!input.isEmpty()) {
       int i = 0;
+      int k = 0;
       while ((i < input.size())
           && !input.get(i).startsWith(leadingSpace + AbstractList.ORDERED_CHAR)) {
+        if (input.get(i).startsWith(leadingSpace + AbstractList.UNORDERED_CHAR)) {
+          k = i;
+        }
         i++;
       }
       int j = 0; // count number of lines with same nesting level but different with UNORDERED_CHAR
@@ -54,6 +58,17 @@ public class OrderedList extends AbstractList {
             AbstractList.ORDERED_CHAR);
       } else if (j > 0) { /// un-nested mixed list
         this.mixedList = new UnorderedList(input, leadingSpace);
+      } else if (k > 0) {
+        this.mixedList = new UnorderedList(input.subList(k, i), leadingSpace);
+        String itemLeadingSpace = leadingSpace + AbstractList.NESTING_SPACES;
+        AbstractList sublist = null;
+        if (input.get(0).substring(itemLeadingSpace.length())
+            .startsWith(AbstractList.ORDERED_CHAR)) {
+          sublist = new OrderedList(input.subList(0, k), itemLeadingSpace);
+        } else {
+          sublist = new UnorderedList(input.subList(0, k), itemLeadingSpace);
+        }
+        lastItem.setSubList(sublist);
       } else {
         String itemLeadingSpace = leadingSpace + AbstractList.NESTING_SPACES;
         AbstractList sublist = null;
