@@ -7,11 +7,11 @@ package edu.neu.ccs.cs5004.seattle.assignment9.html;
  */
 public class BlankLine extends AbstractElement {
 
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    public String toPrettyString() {
-        return "<br />\n";
-    }
+  /**
+   * {@inheritDoc }
+   */
+  @Override
+  public String toPrettyString() {
+    return "<br />\n";
+  }
 }
