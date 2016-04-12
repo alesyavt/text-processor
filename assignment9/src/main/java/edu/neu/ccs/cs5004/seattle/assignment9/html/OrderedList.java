@@ -13,11 +13,22 @@ import java.util.List;
  */
 public class OrderedList extends AbstractList {
 
+  /**
+   * Create an empty ordered list
+   */
   public OrderedList() {
     super("");
   }
 
-  public OrderedList(List<String> input, String leadingSpace) {
+  /**
+   * Create an abstract list beginning with an ordered list, given a list of strings formatted
+   * according to template specifications for abstract list.
+   *
+   * @param input a list of strings formatted with special characters, "* " for unordered list and
+   *        "1. " for ordered list.
+   * @param leadingSpace the leading space in the first line of the input list
+   */
+  OrderedList(List<String> input, String leadingSpace) {
     super(leadingSpace);
     listHelper(null, input, leadingSpace);
   }
