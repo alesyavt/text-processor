@@ -1,4 +1,5 @@
 package edu.neu.ccs.cs5004.seattle.assignment9.html;
+
 /*
  * To change this license header, choose License Headers in Project Properties. To change this
  * template file, choose Tools | Templates and open the template in the editor.
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Represents an ordered list in HTML
  *
- * @author yoganandc
+ * @author yoganandc alesyavt
  */
 public class OrderedList extends AbstractList {
 
@@ -17,7 +18,7 @@ public class OrderedList extends AbstractList {
    * Create an empty ordered list
    */
   public OrderedList() {
-    super("");
+    super();
   }
 
   /**
@@ -29,10 +30,9 @@ public class OrderedList extends AbstractList {
    * @param leadingSpace the leading space in the first line of the input list
    */
   OrderedList(List<String> input, String leadingSpace) {
-    super(leadingSpace);
+    super();
     listHelper(null, input, leadingSpace);
   }
-
 
   /**
    *
@@ -78,8 +78,6 @@ public class OrderedList extends AbstractList {
       }
     }
   }
-
-
 
   /**
    * {@inheritDoc }

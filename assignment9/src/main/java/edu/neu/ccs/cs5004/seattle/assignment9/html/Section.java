@@ -13,10 +13,10 @@ import java.util.Objects;
 /**
  * A section is an element that can have elements nested within it.
  *
- * @author yoganandc
+ * @author yoganandc alesyavt
  */
 public final class Section extends AbstractElement {
-    
+
     private static final String HL_MATCHER = "^\\*\\*\\*\\*\\**\\ *\\n$";
     private static final String BQ_MATCHER = "^>+\\ .*\\n$";
     private static final String HD_MATCHER = "^#+\\ .*\\n$";
@@ -26,7 +26,7 @@ public final class Section extends AbstractElement {
     private static final char CHAR_SPACE = ' ';
     private static final char CHAR_POUND = '#';
     private static final int HEADER_MAXDEPTH = 6;
-    
+
     private final List<AbstractElement> nodes;
     private final String value;
 
@@ -116,7 +116,7 @@ public final class Section extends AbstractElement {
     @Override
     public String toPrettyString() {
         StringBuilder stringBuilder = new StringBuilder();
-        
+
         if (this.getValue() != null) {
             stringBuilder.append("<h");
             stringBuilder.append(this.getDepth());
@@ -143,13 +143,13 @@ public final class Section extends AbstractElement {
      * @param lines The lines of Markdown to be parsed
      */
     private void parse(ArrayList<String> lines) {
-        
+
         String lineRead = null;
         String line = null;
-        
+
         Iterator<String> it = lines.iterator();
         while (it.hasNext()) {
-            
+
             if (lineRead == null) {
                 line = it.next();
             } else {
@@ -160,23 +160,23 @@ public final class Section extends AbstractElement {
             // HANDLE BLANKLINE
             if (line.equals(NEW_LINE)) {
                 this.add(new BlankLine());
-                
+
             } // HANDLE <HR> 
             else if (line.matches(HL_MATCHER)) {
                 this.add(new HorizontalLine());
-                
+
             } // HANDLE HEADERS
             else if (line.matches(HD_MATCHER)) {
                 lineRead = this.handleSection(line, it);
-                
+
             } // HANDLE LISTS
             else if (line.matches(UL_MATCHER) || line.matches(OL_MATCHER)) {
                 this.handleList(line, it);
-                
+
             } // HANDLE BLOCKQUOTE 
             else if (line.matches(Section.BQ_MATCHER)) {
                 lineRead = this.handleBlockquote(line, it);
-                
+
             } // HANDLE PARAGRAPHS
             else {
                 this.handleParagraph(line, it);
@@ -244,7 +244,7 @@ public final class Section extends AbstractElement {
             return i;
         }
     }
-    
+
     private static int getActualHeaderDepth(String line) {
         int i = 0;
         while (line.charAt(i) == CHAR_POUND) {
@@ -252,7 +252,7 @@ public final class Section extends AbstractElement {
         }
         return i;
     }
-    
+
     private String handleSection(String line, Iterator<String> it) {
         String ret = null;
 
@@ -293,7 +293,7 @@ public final class Section extends AbstractElement {
         newSection.parse(subLines);
         return ret;
     }
-    
+
     private String handleBlockquote(String line, Iterator<String> it) {
         String ret = null;
         List<String> newBlock = new ArrayList<>();
@@ -310,7 +310,7 @@ public final class Section extends AbstractElement {
         }
         return ret;
     }
-    
+
     private void handleParagraph(String line, Iterator<String> it) {
         StringBuilder paragraph = new StringBuilder();
         paragraph.append(line);

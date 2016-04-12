@@ -6,7 +6,7 @@ package edu.neu.ccs.cs5004.seattle.assignment9.html;
  */
 /**
  *
- * @author yoganandc
+ * @author yoganandc alesyavt
  */
 public class BlankLine extends AbstractElement {
 

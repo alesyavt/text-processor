@@ -4,14 +4,13 @@ package edu.neu.ccs.cs5004.seattle.assignment9.html;
  * To change this license header, choose License Headers in Project Properties. To change this
  * template file, choose Tools | Templates and open the template in the editor.
  */
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Represents any list element in HTML
  *
- * @author yoganandc
+ * @author yoganandc alesyavt
  */
 public abstract class AbstractList extends AbstractElement {
 
@@ -21,6 +20,7 @@ public abstract class AbstractList extends AbstractElement {
 
   protected final List<Item> itemList;
   protected AbstractList mixedList;
+
 
   /**
    * Creates an html list
@@ -40,6 +40,14 @@ public abstract class AbstractList extends AbstractElement {
   }
 
   /**
+   * Creates a new instance of AbstractList
+   */
+  protected AbstractList() {
+    this.itemList = new ArrayList<>();
+    this.mixedList = null;
+  }
+
+  /**
    * Helper method for creating regular, nested, and/or mixed lists. Keeps track of the last item
    * that was added to the itemList. input is in process of being created, and leadingSpace
    * accumulates spaces based on nesting level of the input list
@@ -49,14 +57,6 @@ public abstract class AbstractList extends AbstractElement {
    * @param leadingSpace the leading space of the list item, an accumulator
    */
   protected abstract void listHelper(Item lastItem, List<String> input, String leadingSpace);
-
-  /**
-   * Creates a new instance of AbstractList
-   */
-  protected AbstractList(String leadingSpace) {
-    this.itemList = new ArrayList<>();
-    this.mixedList = null;
-  }
 
   /**
    * Add a ListElement to this List
@@ -70,7 +70,6 @@ public abstract class AbstractList extends AbstractElement {
     }
     this.itemList.add(el);
   }
-
 
   /**
    * !!!!!

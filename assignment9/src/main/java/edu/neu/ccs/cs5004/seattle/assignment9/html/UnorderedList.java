@@ -1,4 +1,5 @@
 package edu.neu.ccs.cs5004.seattle.assignment9.html;
+
 /*
  * To change this license header, choose License Headers in Project Properties. To change this
  * template file, choose Tools | Templates and open the template in the editor.
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Represents an Unordered List in HTML
  *
- * @author yoganandc
+ * @author yoganandc alesyavt
  */
 public class UnorderedList extends AbstractList {
 
@@ -17,7 +18,7 @@ public class UnorderedList extends AbstractList {
    * Create an empty unordered list
    */
   public UnorderedList() {
-    super("");
+    super();
   }
 
   /**
@@ -29,7 +30,7 @@ public class UnorderedList extends AbstractList {
    * @param leadingSpace the leading space in the first line of the input list
    */
   UnorderedList(List<String> input, String leadingSpace) {
-    super(leadingSpace);
+    super();
     listHelper(null, input, leadingSpace);
   }
 
@@ -78,8 +79,6 @@ public class UnorderedList extends AbstractList {
       }
     }
   }
-
-
 
   /**
    * {@inheritDoc }
