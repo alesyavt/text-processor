@@ -19,9 +19,8 @@ public class Blockquote extends AbstractParagraph {
   /**
    * Creates a blockquote with the given block
    *
-   * @param block a list of strings beginning with one or more blockquote special characters
-   *        followed by a space. Each special char represents an extra nesting level of the
-   *        blockquote
+   * @param block a list of strings beginning with one or more blockquote BQ_CHAR followed by a
+   *        space. Each special char represents an extra nesting level of the blockquote
    */
   public Blockquote(List<String> block) {
     this(block, 1);
@@ -29,8 +28,8 @@ public class Blockquote extends AbstractParagraph {
 
   /**
    *
-   * @param block a list of strings beginning with one or more blockquote special characters ">",
-   *        followed by a space. Each ">" represents an extra nesting level of the blockquote
+   * @param block a list of strings beginning with one or more blockquote special characters BQ_CHAR
+   *        followed by a space. Each BQ_CHAR represents an extra nesting level of the blockquote
    * @param specialCount the nesting level of this blockquote
    */
   Blockquote(List<String> block, int specialCount) {
@@ -80,10 +79,10 @@ public class Blockquote extends AbstractParagraph {
 
 
   /**
-   * Return the count of ">" at the beginning of given string s
+   * Return the count of BQ_CHAR at the beginning of given string s
    *
-   * @param s a string beginning with one or more ">" followed by a space
-   * @return the number of ">" that s begins with
+   * @param s a string beginning with one or more BQ_CHAR followed by a space
+   * @return the number of BQ_CHAR that s begins with
    */
   private int specialCount(String s) {
     int specialCount = 0;
