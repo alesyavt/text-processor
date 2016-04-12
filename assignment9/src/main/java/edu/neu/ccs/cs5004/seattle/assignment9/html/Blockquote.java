@@ -14,6 +14,8 @@ public class Blockquote extends AbstractParagraph {
   private List<AbstractParagraph> list;
   private int specialCharCount;
 
+  private static final char BQ_CHAR = '>';
+
   /**
    * Creates a blockquote with the given block
    *
@@ -85,7 +87,7 @@ public class Blockquote extends AbstractParagraph {
    */
   private int specialCount(String s) {
     int specialCount = 0;
-    while ((specialCount < s.length()) && (s.charAt(specialCount) == '>')) {
+    while ((specialCount < s.length()) && (s.charAt(specialCount) == Blockquote.BQ_CHAR)) {
       specialCount++;
     }
     return specialCount;
