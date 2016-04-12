@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * Represents any generic HTML element with its value and depth
  *
- * @author yoganandc
+ * @author yoganandc alesyavt
  */
 public abstract class AbstractElement {
 

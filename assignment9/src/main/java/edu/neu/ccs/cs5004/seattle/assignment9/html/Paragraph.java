@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Represents the HTML paragraph element.
  *
- * @author yoganandc
+ * @author yoganandc alesyavt
  */
 public class Paragraph extends AbstractParagraph {
 

@@ -3,7 +3,7 @@ package edu.neu.ccs.cs5004.seattle.assignment9.html;
 /**
  * Represents any block level text element
  *
- * @author yoganandc
+ * @author yoganandc alesyavt
  */
 public abstract class AbstractParagraph extends AbstractElement {
 
