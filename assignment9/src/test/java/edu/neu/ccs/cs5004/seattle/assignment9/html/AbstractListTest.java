@@ -18,7 +18,7 @@ import org.junit.Test;
  */
 public class AbstractListTest {
 
-  AbstractList l1, l2, l3, l4;
+  AbstractList l1, l2, l3, l4, l5, l6, l7, l8;
 
   public AbstractListTest() {}
 
@@ -52,6 +52,38 @@ public class AbstractListTest {
     list4.add("  1. This is inner item 2");
     list4.add("1. This is item 3");
     this.l4 = AbstractList.createList(list4);
+
+    List<String> list5 = new ArrayList<>();
+    list5.add("1. one ");
+    list5.add("1. two  ");
+    list5.add("  * inner one ");
+    list5.add("  * inner two ");
+    list5.add("    1. inner inner one ");
+    list5.add("    1. inner inner two ");
+    list5.add("    * inner inner mixed one ");
+    list5.add("    * inner inner mixed two ");
+    list5.add("  * inner three");
+    list5.add("1. three ");
+    this.l5 = AbstractList.createList(list5);
+    this.l6 = AbstractList.createList(list5);
+    this.l7 = AbstractList.createList(list5);
+
+    List<String> list5_1 = new ArrayList<>();
+    list5_1.add("1. one ");
+    list5_1.add("1. two  ");
+    list5_1.add("  * inner one ");
+    list5_1.add("  * inner two ");
+    list5_1.add("    1. inner inner one ");
+    list5_1.add("    1. inner inner two ");
+    list5_1.add("    * inner inner mixed one ");
+    list5_1.add("    * inner inner mixed two ");
+    list5_1.add("    1. inner inner mixed two ");
+    list5_1.add("  * inner three");
+    list5_1.add("    * inner three");
+    list5_1.add("1. three ");
+
+    this.l8 = AbstractList.createList(list5_1);
+
   }
 
   @After
@@ -193,26 +225,52 @@ public class AbstractListTest {
 
     Assert.assertEquals(this.l1.hashCode(), this.l3.hashCode()); // EQUAL OBJECTS PRODUCE EQUAL
     // HASHCODE
+    Assert.assertEquals(this.l6.hashCode(), this.l7.hashCode());
     Assert.assertFalse(this.l1.equals(this.l2));
+    Assert.assertFalse(this.l8.equals(this.l7));
   }
 
   @Test
   public void testEquals() {
     Assert.assertEquals(true, this.l1.equals(this.l1)); // REFLEXIVE
+    Assert.assertEquals(true, this.l5.equals(this.l5));
 
     Assert.assertEquals(true, this.l1.equals(this.l3));
     Assert.assertEquals(true, this.l3.equals(this.l1)); // SYMMETRIC
+    Assert.assertEquals(false, this.l5.equals(this.l8));
+    Assert.assertEquals(false, this.l8.equals(this.l5)); // SYMMETRIC
 
     Assert.assertEquals(true, this.l1.equals(this.l3));
     Assert.assertEquals(true, this.l3.equals(this.l4));
     Assert.assertEquals(true, this.l1.equals(this.l4)); // TRANSITIVE
+    Assert.assertEquals(true, this.l5.equals(this.l6));
+    Assert.assertEquals(true, this.l6.equals(this.l7));
+    Assert.assertEquals(true, this.l5.equals(this.l7)); // TRANSITIVE
 
     for (Integer i = 0; i < 100; i++) {
       Assert.assertEquals(false, this.l1.equals(this.l2)); // CONSISTENT
     }
+    for (Integer i = 0; i < 100; i++) {
+      Assert.assertEquals(false, this.l5.equals(this.l3)); // CONSISTENT
+    }
 
     Assert.assertEquals(false, this.l1.equals(null)); // NON-NULL REFERENCE MUST NOT BE EQUAL TO
     // NULL
+    Assert.assertEquals(false, this.l5.equals(null));
     Assert.assertFalse(this.l1.equals(new Object()));
+    Assert.assertFalse(this.l5.equals(new OrderedList()));
+    Assert.assertFalse(new UnorderedList().equals(new OrderedList()));
+  }
+
+  @Test
+  public void testToPrettyString() {
+    String l5String = "<ol>\n" + "<li>one</li>\n" + "<li>two\n" + "<ul>\n" + "<li>inner one</li>\n"
+        + "<li>inner two\n" + "<ol>\n" + "<li>inner inner one</li>\n" + "<li>inner inner two</li>\n"
+        + "</ol>\n" + "<ul>\n" + "<li>inner inner mixed one</li>\n"
+        + "<li>inner inner mixed two</li>\n" + "</ul>\n" + "</li>\n" + "<li>inner three</li>\n"
+        + "</ul>\n" + "</li>\n" + "<li>three</li>\n</ol>\n";
+    System.out.println(l5String);
+    System.out.println(this.l5.toPrettyString());
+    Assert.assertEquals(l5String, this.l5.toPrettyString());
   }
 }
