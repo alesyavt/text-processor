@@ -60,23 +60,21 @@ public class BlockquoteTest {
         test.add(">>>>> jump from 3rd to 5th");
 
         String expectedOutput1
-                = "<blockquote>\n"
-                + "<p>What are the resources allocated?</p>\n"
-                + "<blockquote>\n"
-                + "<p>Are you asking in terms of headcount or machines?</p>\n"
-                + "<blockquote>\n"
-                + "<p>Headcount</p>\n"
-                + "<blockquote>\n"
-                + "<blockquote>\n"
-                + "<p>jump from 3rd to 5th</p>\n"
+                = "<blockquote>"
+                + "<p> What are the resources allocated?</p>\n"
+                + "<blockquote>"
+                + "<p> Are you asking in terms of headcount or machines?</p>\n"
+                + "<blockquote>"
+                + "<p> Headcount</p>\n"
+                + "<blockquote>"
+                + "<blockquote>"
+                + "<p> jump from 3rd to 5th</p>\n"
                 + "</blockquote>\n"
                 + "</blockquote>\n"
                 + "</blockquote>\n"
                 + "</blockquote>\n"
-                + "</blockquote>";
-        System.out.println(expectedOutput1);
+                + "</blockquote>\n";
         Blockquote bq = new Blockquote(test);
-        System.out.println(bq.toPrettyString());
         assertEquals(expectedOutput1, bq.toPrettyString());
     }
 
