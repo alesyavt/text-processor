@@ -2,10 +2,6 @@ package edu.neu.ccs.cs5004.seattle.assignment9.html;
 
 import java.util.Objects;
 
-/*
- * To change this license header, choose License Headers in Project Properties. To change this
- * template file, choose Tools | Templates and open the template in the editor.
- */
 /**
  * Represents any generic HTML element with its value and depth
  *

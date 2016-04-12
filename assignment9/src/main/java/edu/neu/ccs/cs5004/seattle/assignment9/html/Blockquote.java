@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents the HTML element blockquote
+ *
+ * @author yoganandc alesyavt
+ */
 public class Blockquote extends AbstractParagraph {
 
-  private List<AbstractParagraph> list;
-  private int specialCharCount;
-  private final static String SPECIAL_CHAR = ">";
+    private List<AbstractParagraph> list;
+    private int specialCharCount;
+    private final static String SPECIAL_CHAR = ">";
 
+<<<<<<< HEAD
   public Blockquote(List<String> block) {
     this(block, 1);
   }
@@ -22,9 +28,13 @@ public class Blockquote extends AbstractParagraph {
       bqHelper(block.subList(1, block.size()), 0);
     } else {
       bqHelper(block, 0);
+=======
+    public Blockquote(List<String> block) {
+        this(block, 1);
+>>>>>>> 1a41eb5a559885be3c118d0886bfd5496f426389
     }
-  }
 
+<<<<<<< HEAD
   private void addParag(List<String> block) {
     StringBuilder parag = new StringBuilder();
     parag.append(block.get(0).substring(this.specialCharCount));
@@ -46,61 +56,108 @@ public class Blockquote extends AbstractParagraph {
       bqHelper(block.subList(1, block.size()), 0);
     }
   }
+=======
+    public Blockquote(List<String> block, int specialCount) {
+        this.list = new ArrayList<>();
+        this.specialCharCount = specialCount;
+        if (specialCount(block.get(0)) == this.specialCharCount) {
+            int paragIndex = addParag(block);
+            bqHelper(block.subList(paragIndex, block.size()), 0);
+        } else {
+            bqHelper(block, 0);
+        }
+    }
 
-  private int specialCount(String s) {
-    int specialCount = 0;
-    while ((specialCount < s.length()) && (s.charAt(specialCount) == '>')) {
-      specialCount++;
+    private int addParag(List<String> block) {
+        int paragIndex = 1;
+        StringBuilder parag = new StringBuilder();
+        parag.append(block.get(0).substring(this.specialCharCount));
+        while ((paragIndex < block.size())
+                && (!block.get(paragIndex).startsWith(Blockquote.SPECIAL_CHAR)
+                || (specialCount(block.get(paragIndex)) == this.specialCharCount))) {
+            if (specialCount(block.get(paragIndex)) == -1) {
+                (parag.append(" ")).append(block.get(paragIndex));
+            } else {
+                parag.append(block.get(paragIndex).substring(this.specialCharCount));
+            }
+            paragIndex++;
+        }
+        this.list.add(new Paragraph(parag.toString()));
+        return paragIndex;
     }
-    return specialCount;
-  }
+>>>>>>> 1a41eb5a559885be3c118d0886bfd5496f426389
 
-  /**
-   * {@inheritDoc }
-   */
-  @Override
-  public String toPrettyString() {
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("<blockquote>");
-    for (AbstractParagraph p : this.list) {
-      stringBuilder.append(AbstractElement.emphasize(p.toPrettyString()));
+    private void bqHelper(List<String> block, int index) {
+        // if (!block.isEmpty()) {
+        if ((index < block.size()) && (specialCount(block.get(index)) > this.specialCharCount)) {
+            bqHelper(block, index + 1);
+        } else if (index > 0) {
+            this.list.add(new Blockquote(block.subList(0, index), this.specialCharCount + 1));
+            if (index < block.size()) {
+                int paragIndex = addParag(block.subList(index, block.size()));
+                bqHelper(block.subList(paragIndex + index, block.size()), 0);
+            }
+        } else if (!block.isEmpty()) {
+            int paragIndex = addParag(block.subList(index, block.size()));
+            bqHelper(block.subList(paragIndex, block.size()), 0);
+        }
+        // }
     }
-    stringBuilder.append("</blockquote>\n");
-    return stringBuilder.toString();
-  }
 
-  /**
-   * {@inheritDoc }
-   */
-  @Override
-  public int hashCode() {
-    int hash = 7;
-    hash = (67 * hash) + Objects.hashCode(this.list);
-    hash = (67 * hash) + this.specialCharCount;
-    return hash;
-  }
+    private int specialCount(String s) {
+        int specialCount = 0;
+        while ((specialCount < s.length()) && (s.charAt(specialCount) == '>')) {
+            specialCount++;
+        }
+        return specialCount;
+    }
 
-  /**
-   * {@inheritDoc }
-   */
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    public String toPrettyString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("<blockquote>");
+        for (AbstractParagraph p : this.list) {
+            stringBuilder.append(AbstractElement.emphasize(p.toPrettyString()));
+        }
+        stringBuilder.append("</blockquote>\n");
+        return stringBuilder.toString();
     }
-    if (obj == null) {
-      return false;
+
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = (67 * hash) + Objects.hashCode(this.list);
+        hash = (67 * hash) + this.specialCharCount;
+        return hash;
     }
-    if (getClass() != obj.getClass()) {
-      return false;
+
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Blockquote other = (Blockquote) obj;
+        if (this.specialCharCount != other.specialCharCount) {
+            return false;
+        }
+        if (!Objects.equals(this.list, other.list)) {
+            return false;
+        }
+        return true;
     }
-    final Blockquote other = (Blockquote) obj;
-    if (this.specialCharCount != other.specialCharCount) {
-      return false;
-    }
-    if (!Objects.equals(this.list, other.list)) {
-      return false;
-    }
-    return true;
-  }
 }
