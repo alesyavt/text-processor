@@ -39,10 +39,12 @@ public class AbstractListTest {
         list.add("  1. This is inner item 2");
         list.add("1. This is item 3");
         AbstractList ol = AbstractList.createList(list);
+
         String output1 = "<ol>\n" + "<li>This is item 1</li>\n" + "<li>This is item 2\n" + "<ol>\n"
                 + "<li>This is inner item 1</li>\n" + "<li>This is inner item 2</li>\n" + "</ol>\n"
                 + "</li>\n" + "<li>This is item 3</li>\n" + "</ol>\n";
         Assert.assertEquals(output1, ol.toPrettyString());
+
         OrderedList output2 = new OrderedList();
         output2.addItem(new Item("This is item 1"));
         Item item2 = new Item("This is item 2");
@@ -55,7 +57,6 @@ public class AbstractListTest {
         Assert.assertEquals(output2, ol);
 
         List<String> list2 = new ArrayList<>();
-
         list2.add("*  Element 1");
         list2.add("*  Element 2");
         list2.add("  *  Element 3");
@@ -68,8 +69,8 @@ public class AbstractListTest {
         list2.add("    1. Element 10");
         list2.add("*  Element 11");
         list2.add("*  Element 12");
-
         AbstractList ul = AbstractList.createList(list2);
+
         String output3 = "<ul>\n" + "<li>Element 1</li>\n" + "<li>Element 2\n" + "<ul>\n"
                 + "<li>Element 3</li>\n" + "<li>Element 4\n" + "<ol>\n" + "<li>Element 5\n" + "<ul>\n"
                 + "<li>Element 6</li>\n" + "<li>Element 7</li>\n" + "<li>Element 8</li>\n" + "</ul>\n"
@@ -77,6 +78,7 @@ public class AbstractListTest {
                 + "</ol>\n" + "</li>\n" + "</ul>\n" + "</li>\n" + "<li>Element 11</li>\n"
                 + "<li>Element 12</li>\n" + "</ul>\n";
         Assert.assertEquals(output3, ul.toPrettyString());
+
         UnorderedList output4 = new UnorderedList();
         output4.addItem(new Item("Element 1"));
         Item item3 = new Item("Element 2");

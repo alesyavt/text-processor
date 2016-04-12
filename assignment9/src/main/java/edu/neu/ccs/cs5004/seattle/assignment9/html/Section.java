@@ -163,7 +163,7 @@ public final class Section extends AbstractElement {
 
             } // HANDLE BLOCKQUOTE 
             else if (line.matches(Section.BQ_MATCHER)) {
-                this.handleBlockquote(line, it);
+                lineRead = this.handleBlockquote(line, it);
 
             } // HANDLE PARAGRAPHS
             else {
@@ -256,18 +256,21 @@ public final class Section extends AbstractElement {
         return ret;
     }
 
-    private void handleBlockquote(String line, Iterator<String> it) {
+    private String handleBlockquote(String line, Iterator<String> it) {
+        String ret = null;
         List<String> newBlock = new ArrayList<>();
         newBlock.add(line);
         while (it.hasNext()) {
             line = it.next();
-            if (!line.equals(NEW_LINE)) {
+            if (line.matches(BQ_MATCHER)) {
                 newBlock.add(line);
             } else {
                 this.add(new Blockquote(newBlock));
+                ret = line;
                 break;
             }
         }
+        return ret;
     }
 
     private void handleParagraph(String line, Iterator<String> it) {
