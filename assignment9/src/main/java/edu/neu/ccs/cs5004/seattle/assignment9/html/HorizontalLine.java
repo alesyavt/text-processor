@@ -6,11 +6,15 @@
 package edu.neu.ccs.cs5004.seattle.assignment9.html;
 
 /**
+ * Represents the HTML element <hr>
  *
  * @author yoganandc
  */
 public class HorizontalLine extends AbstractElement {
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public String toPrettyString() {
         return "<hr />\n";

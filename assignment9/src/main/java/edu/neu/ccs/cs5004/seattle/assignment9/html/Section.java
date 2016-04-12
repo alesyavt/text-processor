@@ -16,7 +16,7 @@ import java.util.Objects;
  * @author yoganandc
  */
 public final class Section extends AbstractElement {
-
+    
     private static final String HL_MATCHER = "^\\*\\*\\*\\*\\**\\ *\\n$";
     private static final String BQ_MATCHER = "^>+\\ .*\\n$";
     private static final String HD_MATCHER = "^#+\\ .*\\n$";
@@ -25,7 +25,8 @@ public final class Section extends AbstractElement {
     private static final String NEW_LINE = "\n";
     private static final char CHAR_SPACE = ' ';
     private static final char CHAR_POUND = '#';
-
+    private static final int HEADER_MAXDEPTH = 6;
+    
     private final List<AbstractElement> nodes;
     private final String value;
 
@@ -43,6 +44,12 @@ public final class Section extends AbstractElement {
         this.nodes = new ArrayList<>();
     }
 
+    /**
+     * Creates a new instance of Section from the given list of strings that
+     * contain lines of Markdown
+     *
+     * @param lines The lines of Markdown to be converted into an HTML section
+     */
     public Section(ArrayList<String> lines) {
         this.value = null;
         this.nodes = new ArrayList<>();
@@ -54,8 +61,7 @@ public final class Section extends AbstractElement {
     }
 
     /**
-     * Creates a new instance of Section with value set to null. Only used by
-     * createRoot().
+     * Creates a new instance of Section with value set to null.
      */
     public Section() {
         this.value = null;
@@ -110,7 +116,7 @@ public final class Section extends AbstractElement {
     @Override
     public String toPrettyString() {
         StringBuilder stringBuilder = new StringBuilder();
-
+        
         if (this.getValue() != null) {
             stringBuilder.append("<h");
             stringBuilder.append(this.getDepth());
@@ -130,14 +136,20 @@ public final class Section extends AbstractElement {
         return stringBuilder.toString();
     }
 
+    /**
+     * Parses the given lists of strings and adds parsed elements to this
+     * Section
+     *
+     * @param lines The lines of Markdown to be parsed
+     */
     private void parse(ArrayList<String> lines) {
-
+        
         String lineRead = null;
         String line = null;
-
+        
         Iterator<String> it = lines.iterator();
         while (it.hasNext()) {
-
+            
             if (lineRead == null) {
                 line = it.next();
             } else {
@@ -148,23 +160,23 @@ public final class Section extends AbstractElement {
             // HANDLE BLANKLINE
             if (line.equals(NEW_LINE)) {
                 this.add(new BlankLine());
-
+                
             } // HANDLE <HR> 
             else if (line.matches(HL_MATCHER)) {
                 this.add(new HorizontalLine());
-
+                
             } // HANDLE HEADERS
             else if (line.matches(HD_MATCHER)) {
                 lineRead = this.handleSection(line, it);
-
+                
             } // HANDLE LISTS
             else if (line.matches(UL_MATCHER) || line.matches(OL_MATCHER)) {
                 this.handleList(line, it);
-
+                
             } // HANDLE BLOCKQUOTE 
             else if (line.matches(Section.BQ_MATCHER)) {
                 lineRead = this.handleBlockquote(line, it);
-
+                
             } // HANDLE PARAGRAPHS
             else {
                 this.handleParagraph(line, it);
@@ -172,6 +184,14 @@ public final class Section extends AbstractElement {
         }
     }
 
+    /**
+     * Given the current line and an Iterator (over the remaining lines to
+     * processed), identifies all the lines to be parsed as part of this list.
+     * The created list is then added to this Section
+     *
+     * @param line The first line of the new list
+     * @param it The iterator (over the lines to be processed)
+     */
     private void handleList(String line, Iterator<String> it) {
         List<String> listLines = new ArrayList<>();
         listLines.add(line);
@@ -207,14 +227,32 @@ public final class Section extends AbstractElement {
         }
     }
 
+    /**
+     * Returns the depth of header contained in given string
+     *
+     * @param line The line containing the header
+     * @return Given header's depth
+     */
     private static int getHeaderDepth(String line) {
+        int i = 0;
+        while (line.charAt(i) == CHAR_POUND) {
+            i++;
+        }
+        if (i > HEADER_MAXDEPTH) {
+            return HEADER_MAXDEPTH;
+        } else {
+            return i;
+        }
+    }
+    
+    private static int getActualHeaderDepth(String line) {
         int i = 0;
         while (line.charAt(i) == CHAR_POUND) {
             i++;
         }
         return i;
     }
-
+    
     private String handleSection(String line, Iterator<String> it) {
         String ret = null;
 
@@ -232,7 +270,7 @@ public final class Section extends AbstractElement {
         }
 
         // 3. EXTRACT THE CONTENTS OF HEADER OF THIS NEW SECTION
-        String headerContent = line.substring(headerDepth + 1, line.indexOf(NEW_LINE));
+        String headerContent = line.substring(Section.getActualHeaderDepth(line) + 1, line.indexOf(NEW_LINE));
         Section newSection = new Section(headerContent);
         last.add(newSection);
 
@@ -255,7 +293,7 @@ public final class Section extends AbstractElement {
         newSection.parse(subLines);
         return ret;
     }
-
+    
     private String handleBlockquote(String line, Iterator<String> it) {
         String ret = null;
         List<String> newBlock = new ArrayList<>();
@@ -272,7 +310,7 @@ public final class Section extends AbstractElement {
         }
         return ret;
     }
-
+    
     private void handleParagraph(String line, Iterator<String> it) {
         StringBuilder paragraph = new StringBuilder();
         paragraph.append(line);

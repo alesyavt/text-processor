@@ -1,7 +1,18 @@
 package edu.neu.ccs.cs5004.seattle.assignment9.html;
 
+/**
+ * Represents any block level text element
+ *
+ * @author yoganandc
+ */
 public abstract class AbstractParagraph extends AbstractElement {
 
+    /**
+     * Static function to replace all markdown links with HTML hyperlinks
+     *
+     * @param value The string containing link in markdown syntax
+     * @return The string containing the same links but in HTML
+     */
     public static String hyperLinkify(String value) {
         int textBegin = value.indexOf(TEXT_BEGIN);
         int textEnd = value.indexOf(TEXT_END);

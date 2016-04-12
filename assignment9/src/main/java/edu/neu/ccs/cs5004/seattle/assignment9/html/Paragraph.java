@@ -2,10 +2,6 @@ package edu.neu.ccs.cs5004.seattle.assignment9.html;
 
 import java.util.Objects;
 
-/*
- * To change this license header, choose License Headers in Project Properties. To change this
- * template file, choose Tools | Templates and open the template in the editor.
- */
 /**
  * Represents the HTML paragraph element.
  *
@@ -47,6 +43,9 @@ public class Paragraph extends AbstractParagraph {
                 .append("</p>\n").toString();
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -54,6 +53,9 @@ public class Paragraph extends AbstractParagraph {
         return hash;
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
