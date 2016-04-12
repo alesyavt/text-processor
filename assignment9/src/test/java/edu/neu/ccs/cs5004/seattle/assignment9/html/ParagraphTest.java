@@ -67,6 +67,12 @@ public class ParagraphTest {
         String test4 = "The rest of this sentence after this point *should be in bold";
         String output4 = "<p>The rest of this sentence after this point <strong>should be in bold</strong></p>\n";
         Assert.assertEquals(output4, new Paragraph(test4).toPrettyString());
+
+        String test5 = "You can see an example [Confused](https://media.giphy.com/media/wi9yHmX7Sztuw/giphy.gif). \n"
+                + "You can read more [here](https://en.wikipedia.org/wiki/Confusion)";
+        String output5 = "<p>You can see an example <a href=\"https://media.giphy.com/media/wi9yHmX7Sztuw/giphy.gif\">Confused</a>. \n"
+                + "You can read more <a href=\"https://en.wikipedia.org/wiki/Confusion\">here</a></p>\n";
+        Assert.assertEquals(output5, new Paragraph(test5).toPrettyString());
     }
 
     @Test

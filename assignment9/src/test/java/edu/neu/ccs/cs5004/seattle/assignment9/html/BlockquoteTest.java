@@ -18,11 +18,32 @@ import static org.junit.Assert.*;
  */
 public class BlockquoteTest {
 
+    Blockquote b1, b2, b3, b4;
+
     public BlockquoteTest() {
     }
 
     @Before
     public void setUp() {
+        List<String> list1 = new ArrayList<>();
+        list1.add("> You can see an example [Confused](https://media.giphy.com/media/wi9yHmX7Sztuw/giphy.gif).");
+        list1.add(">> You can read more [here](https://en.wikipedia.org/wiki/Confusion)");
+        b1 = new Blockquote(list1, 1);
+
+        List<String> list2 = new ArrayList<>();
+        list2.add("So here is some *bold* text and some _italicized_ text.");
+        list2.add("We can also have *_this_*, as well as well as _*this*_.");
+        b2 = new Blockquote(list2);
+
+        List<String> list3 = new ArrayList<>();
+        list3.add("> You can see an example [Confused](https://media.giphy.com/media/wi9yHmX7Sztuw/giphy.gif).");
+        list3.add(">> You can read more [here](https://en.wikipedia.org/wiki/Confusion)");
+        b3 = new Blockquote(list3, 1);
+
+        List<String> list4 = new ArrayList<>();
+        list4.add("> You can see an example [Confused](https://media.giphy.com/media/wi9yHmX7Sztuw/giphy.gif).");
+        list4.add(">> You can read more [here](https://en.wikipedia.org/wiki/Confusion)");
+        b4 = new Blockquote(list4, 1);
     }
 
     @After
@@ -56,6 +77,7 @@ public class BlockquoteTest {
 
     @Test
     public void testHashCode() {
+
     }
 
     @Test
