@@ -245,6 +245,13 @@ public final class Section extends AbstractElement {
         }
     }
 
+    /**
+     * Given a string containing a header, returns the number of # signs
+     * preceding it
+     *
+     * @param line The string containing the header
+     * @return The number of # signs
+     */
     private static int getActualHeaderDepth(String line) {
         int i = 0;
         while (line.charAt(i) == CHAR_POUND) {
@@ -253,6 +260,15 @@ public final class Section extends AbstractElement {
         return i;
     }
 
+    /**
+     * Given the current line and an Iterator (over the remaining lines to
+     * processed), identifies all the lines to be parsed as part of the new
+     * Section. The created Section is then added to this Section
+     *
+     * @param line The first line of the new Section
+     * @param it The iterator (over the lines to be processed)
+     * @return The next after all lines that were processed
+     */
     private String handleSection(String line, Iterator<String> it) {
         String ret = null;
 
@@ -311,6 +327,14 @@ public final class Section extends AbstractElement {
         return ret;
     }
 
+    /**
+     * Given the current line and an Iterator (over the remaining lines to
+     * processed), identifies all the lines to be parsed as part of the new
+     * Paragraph. The created paragraph is then added to this Section
+     *
+     * @param line The first line of the new paragraph
+     * @param it The iterator (over the lines to be processed)
+     */
     private void handleParagraph(String line, Iterator<String> it) {
         StringBuilder paragraph = new StringBuilder();
         paragraph.append(line);
