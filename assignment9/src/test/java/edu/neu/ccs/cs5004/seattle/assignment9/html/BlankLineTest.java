@@ -15,40 +15,38 @@ import org.junit.Test;
  */
 public class BlankLineTest {
 
-    BlankLine b;
+  BlankLine b;
 
-    public BlankLineTest() {
-    }
+  public BlankLineTest() {}
 
-    @Before
-    public void setUp() {
-        this.b = new BlankLine();
-    }
+  @Before
+  public void setUp() {
+    this.b = new BlankLine();
+  }
 
-    @After
-    public void tearDown() {
-    }
+  @After
+  public void tearDown() {}
 
-    @Test
-    public void testToPrettyString() {
-        Assert.assertEquals("<br />\n", this.b.toPrettyString());
-    }
+  @Test
+  public void testToPrettyString() {
+    Assert.assertEquals("<br />\n", this.b.toPrettyString());
+  }
 
-    @Test
-    public void testSetDepth() {
-        this.b.setDepth(2);
-        Assert.assertEquals((Integer) 2, this.b.getDepth());
+  @Test
+  public void testSetDepth() {
+    this.b.setDepth(2);
+    Assert.assertEquals((Integer) 2, this.b.getDepth());
 
-        this.b.setDepth(0);
-        Assert.assertEquals((Integer) 0, this.b.getDepth());
-    }
+    this.b.setDepth(0);
+    Assert.assertEquals((Integer) 0, this.b.getDepth());
+  }
 
-    @Test
-    public void testGetDepth() {
-        Assert.assertEquals((Integer) 0, this.b.getDepth());
+  @Test
+  public void testGetDepth() {
+    Assert.assertEquals((Integer) 0, this.b.getDepth());
 
-        this.b.setDepth(2);
-        Assert.assertEquals((Integer) 2, this.b.getDepth());
-    }
+    this.b.setDepth(2);
+    Assert.assertEquals((Integer) 2, this.b.getDepth());
+  }
 
 }
