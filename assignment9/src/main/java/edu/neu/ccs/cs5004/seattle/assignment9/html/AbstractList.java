@@ -19,7 +19,7 @@ public abstract class AbstractList extends AbstractElement {
   protected static final String UNORDERED_CHAR = "* ";
   protected static final String NESTING_SPACES = "  ";
 
-  protected final List<Item> list;
+  protected final List<Item> itemList;
   protected AbstractList mixedList;
   protected String leadingSpace;
 
@@ -27,7 +27,7 @@ public abstract class AbstractList extends AbstractElement {
    * Creates an html list
    *
    * @param input a list of strings formatted in html list-template style, with ordered lists
-   *        beginning with special character "1." and unordered lists with special character "* ".
+   *        beginning with special character "1. " and unordered lists with special character "* ".
    *        Every two leading spaces represent an extra nesting level. The first level has zero
    *        leading spaces.
    * @return an abstract list in html format
@@ -41,10 +41,21 @@ public abstract class AbstractList extends AbstractElement {
   }
 
   /**
+   * Helper method for creating regular, nested, and/or mixed lists. Keeps track of the last item
+   * that was added to the itemList. input is in process of being created, and leadingSpace
+   * accumulates spaces based on nesting level of the input list
+   *
+   * @param lastItem the most recently added item of
+   * @param input a list of strings formatted in html list-template style
+   * @param leadingSpace the leading space of the list item, an accumulator
+   */
+  protected abstract void listHelper(Item lastItem, List<String> input, String leadingSpace);
+
+  /**
    * Creates a new instance of AbstractList
    */
   protected AbstractList(String leadingSpace) {
-    this.list = new ArrayList<>();
+    this.itemList = new ArrayList<>();
     this.mixedList = null;
     this.leadingSpace = leadingSpace;
   }
@@ -59,7 +70,7 @@ public abstract class AbstractList extends AbstractElement {
     if (el == null) {
       throw new NullPointerException();
     }
-    this.list.add(el);
+    this.itemList.add(el);
   }
 
 
@@ -86,7 +97,7 @@ public abstract class AbstractList extends AbstractElement {
   public int hashCode() {
     final int prime = 31;
     int result = super.hashCode();
-    result = (prime * result) + ((this.list == null) ? 0 : this.list.hashCode());
+    result = (prime * result) + ((this.itemList == null) ? 0 : this.itemList.hashCode());
     return result;
   }
 
@@ -106,11 +117,11 @@ public abstract class AbstractList extends AbstractElement {
       return false;
     }
     AbstractList other = (AbstractList) obj;
-    if (this.list == null) {
-      if (other.list != null) {
+    if (this.itemList == null) {
+      if (other.itemList != null) {
         return false;
       }
-    } else if (!this.list.equals(other.list)) {
+    } else if (!this.itemList.equals(other.itemList)) {
       return false;
     }
     return true;

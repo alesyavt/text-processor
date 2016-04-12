@@ -25,16 +25,13 @@ public class OrderedList extends AbstractList {
 
   /**
    *
-   * @param lastItem the most recently added item of resultingList
-   * @param input a list of strings formatted in html list-template style
-   * @param leadingSpace the leading space of the list item, including special characters "1." or
-   *        "* "
+   * {@inheritDoc}
    */
-  // @Override
+  @Override
   protected void listHelper(Item lastItem, List<String> input, String leadingSpace) {
     if (!input.isEmpty()) {
-      int i = 0;
-      int k = 0;
+      int i = 0; // number of lines that don't match the current nesting level and/or special char
+      int k = 0; // mixed list start index
       while ((i < input.size())
           && !input.get(i).startsWith(leadingSpace + AbstractList.ORDERED_CHAR)) {
         if (input.get(i).startsWith(leadingSpace + AbstractList.UNORDERED_CHAR)) {
@@ -47,21 +44,21 @@ public class OrderedList extends AbstractList {
           && input.get(j).startsWith(leadingSpace + AbstractList.UNORDERED_CHAR)) {
         j++;
       }
-      if (i == 0) { // item has no sublist
+      if (i == 0) { // first line is the next item in the current list
         Item item =
             new Item(input.get(0).substring((leadingSpace + AbstractList.ORDERED_CHAR).length()));
-        this.list.add(item);
+        this.itemList.add(item);
         listHelper(item, input.subList(1, input.size()), leadingSpace);
 
-      } else if (j > 0) { /// un-nested mixed list
+      } else if (j > 0) { /// un-nested mixed list starts with first line
         this.mixedList = new UnorderedList(input, leadingSpace);
 
-      } else if (k > 0) {
+      } else if (k > 0) { // un-nested mixed list starting at line k, with nested list (0,k)
         this.mixedList = new UnorderedList(input.subList(k, input.size()), leadingSpace);
         lastItem.setSubList(
             addSublist(input.subList(0, k), leadingSpace + AbstractList.NESTING_SPACES));
 
-      } else {
+      } else { // nested sublist (0,i) and continuing current list (i,end)
         lastItem.setSubList(
             addSublist(input.subList(0, i), leadingSpace + AbstractList.NESTING_SPACES));
         if ((i) < input.size()) {
@@ -80,7 +77,7 @@ public class OrderedList extends AbstractList {
   public String toPrettyString() {
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("<ol>\n");
-    for (Item el : this.list) {
+    for (Item el : this.itemList) {
       stringBuilder.append(el.toPrettyString());
     }
     stringBuilder.append("</ol>\n");

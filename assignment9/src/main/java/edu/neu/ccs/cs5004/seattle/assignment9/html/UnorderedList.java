@@ -13,18 +13,34 @@ import java.util.List;
  */
 public class UnorderedList extends AbstractList {
 
+  /**
+   * Create an empty unordered list
+   */
   public UnorderedList() {
     super("");
   }
 
+  /**
+   * Create an abstract list beginning with an unordered list, given a list of strings formatted
+   * according to template specifications for abstract list.
+   *
+   * @param input a list of strings formatted with special characters, "* " for unordered list and
+   *        "1. " for ordered list.
+   * @param leadingSpace the leading space in the first line of the input list
+   */
   UnorderedList(List<String> input, String leadingSpace) {
     super(leadingSpace);
     listHelper(null, input, leadingSpace);
   }
 
+  /**
+   *
+   * {@inheritDoc}
+   */
+  @Override
   protected void listHelper(Item lastItem, List<String> input, String leadingSpace) {
     if (!input.isEmpty()) {
-      int i = 0; //
+      int i = 0; // number of lines that don't match the current nesting level and/or special char
       int k = 0; // mixed list start index
       while ((i < input.size())
           && !input.get(i).startsWith(leadingSpace + AbstractList.UNORDERED_CHAR)) {
@@ -42,7 +58,7 @@ public class UnorderedList extends AbstractList {
       if (i == 0) { // first line is the next item in the current list
         Item item =
             new Item(input.get(0).substring((leadingSpace + AbstractList.UNORDERED_CHAR).length()));
-        this.list.add(item);
+        this.itemList.add(item);
         listHelper(item, input.subList(1, input.size()), leadingSpace);
 
       } else if (j > 0) { /// un-nested mixed list starts with first line
@@ -72,7 +88,7 @@ public class UnorderedList extends AbstractList {
   public String toPrettyString() {
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append("<ul>\n");
-    for (Item el : this.list) {
+    for (Item el : this.itemList) {
       stringBuilder.append(el.toPrettyString());
     }
     stringBuilder.append("</ul>\n");

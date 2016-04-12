@@ -170,11 +170,11 @@ public class AbstractListTest {
         list.add("1. Item 1");
         list.add("1. Item 2");
         AbstractList ol = AbstractList.createList(list);
-        assertEquals((Integer) 2, (Integer) ol.list.size());
+        assertEquals((Integer) 2, (Integer) ol.itemList.size());
 
         ol.addItem(new Item("Item 3"));
-        assertEquals((Integer) 3, (Integer) ol.list.size());
-        assertTrue(ol.list.contains(new Item("Item 3")));
+        assertEquals((Integer) 3, (Integer) ol.itemList.size());
+        assertTrue(ol.itemList.contains(new Item("Item 3")));
     }
 
     @Test(expected = NullPointerException.class)
