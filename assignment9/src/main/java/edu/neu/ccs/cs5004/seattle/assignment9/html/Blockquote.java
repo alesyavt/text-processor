@@ -18,6 +18,8 @@ public class Blockquote extends AbstractParagraph {
    * Creates a blockquote with the given block
    *
    * @param block a list of strings beginning with one or more blockquote special characters
+   *        followed by a space. Each special char represents an extra nesting level of the
+   *        blockquote
    */
   public Blockquote(List<String> block) {
     this(block, 1);
