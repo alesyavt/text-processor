@@ -56,23 +56,27 @@ public class BlockquoteTest {
         List<String> test = new ArrayList<>();
         test.add("> What are the resources allocated?");
         test.add(">> Are you asking in terms of headcount or machines?");
-        test.add("just text");
-        test.add(">>>Headcount");
-        test.add("more text");
-        test.add(">>>>> jump from 2nd to 5th");
-        test.add("> 1st level again");
+        test.add(">>> Headcount");
+        test.add(">>>>> jump from 3rd to 5th");
 
-        String expectedOutput1 = "<blockquote><p> What are the resources allocated?</p>\n"
-                + "<blockquote><p> Are you asking in terms of headcount or machines? just text >>>Headcount more text</p>\n"
-                + "<blockquote><blockquote><blockquote><p> jump from 2nd to 5th</p>\n"
+        String expectedOutput1
+                = "<blockquote>\n"
+                + "<p>What are the resources allocated?</p>\n"
+                + "<blockquote>\n"
+                + "<p>Are you asking in terms of headcount or machines?</p>\n"
+                + "<blockquote>\n"
+                + "<p>Headcount</p>\n"
+                + "<blockquote>\n"
+                + "<blockquote>\n"
+                + "<p>jump from 3rd to 5th</p>\n"
                 + "</blockquote>\n"
                 + "</blockquote>\n"
                 + "</blockquote>\n"
                 + "</blockquote>\n"
-                + "<p> 1st level again</p>\n"
-                + "</blockquote>\n";
-
+                + "</blockquote>";
+        System.out.println(expectedOutput1);
         Blockquote bq = new Blockquote(test);
+        System.out.println(bq.toPrettyString());
         assertEquals(expectedOutput1, bq.toPrettyString());
     }
 

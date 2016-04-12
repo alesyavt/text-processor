@@ -19,11 +19,41 @@ import static org.junit.Assert.*;
  */
 public class AbstractListTest {
 
+    AbstractList l1, l2, l3, l4;
+
     public AbstractListTest() {
     }
 
     @Before
     public void setUp() {
+        List<String> list1 = new ArrayList<>();
+        list1.add("1. This is item 1");
+        list1.add("1. This is item 2");
+        list1.add("  1. This is inner item 1");
+        list1.add("  1. This is inner item 2");
+        list1.add("1. This is item 3");
+        l1 = AbstractList.createList(list1);
+
+        List<String> list2 = new ArrayList<>();
+        list2.add("* Item 1");
+        list2.add("* Item 2");
+        l2 = AbstractList.createList(list2);
+
+        List<String> list3 = new ArrayList<>();
+        list3.add("1. This is item 1");
+        list3.add("1. This is item 2");
+        list3.add("  1. This is inner item 1");
+        list3.add("  1. This is inner item 2");
+        list3.add("1. This is item 3");
+        l3 = AbstractList.createList(list3);
+
+        List<String> list4 = new ArrayList<>();
+        list4.add("1. This is item 1");
+        list4.add("1. This is item 2");
+        list4.add("  1. This is inner item 1");
+        list4.add("  1. This is inner item 2");
+        list4.add("1. This is item 3");
+        l4 = AbstractList.createList(list4);
     }
 
     @After
@@ -109,14 +139,57 @@ public class AbstractListTest {
     }
 
     @Test
-    public void testAddItem() {
+    public void testAddItem1() {
+        List<String> list = new ArrayList<>();
+        list.add("1. Item 1");
+        list.add("1. Item 2");
+        AbstractList ol = AbstractList.createList(list);
+        assertEquals((Integer) 2, (Integer) ol.list.size());
+
+        ol.addItem(new Item("Item 3"));
+        assertEquals((Integer) 3, (Integer) ol.list.size());
+        assertTrue(ol.list.contains(new Item("Item 3")));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testAddItem2() {
+        List<String> list = new ArrayList<>();
+        list.add("1. Item 1");
+        list.add("1. Item 2");
+        AbstractList ol = AbstractList.createList(list);
+        ol.addItem(null);
     }
 
     @Test
     public void testHashCode() {
+        Integer h1 = this.l1.hashCode();
+
+        for (Integer i = 0; i < 100; i++) {
+            Assert.assertEquals((Object) h1, this.l1.hashCode()); // CONSISTENT
+        }
+
+        Assert.assertEquals(this.l1.hashCode(), this.l3.hashCode()); // EQUAL OBJECTS PRODUCE EQUAL
+        // HASHCODE
+        Assert.assertFalse(this.l1.equals(this.l2));
     }
 
     @Test
     public void testEquals() {
+        Assert.assertEquals(true, this.l1.equals(this.l1)); // REFLEXIVE
+
+        Assert.assertEquals(true, this.l1.equals(this.l3));
+        Assert.assertEquals(true, this.l3.equals(this.l1)); // SYMMETRIC
+
+        Assert.assertEquals(true, this.l1.equals(this.l3));
+        Assert.assertEquals(true, this.l3.equals(this.l4));
+        Assert.assertEquals(true, this.l1.equals(this.l4)); // TRANSITIVE
+
+        for (Integer i = 0; i < 100; i++) {
+            Assert.assertEquals(false, this.l1.equals(this.l2)); // CONSISTENT
+        }
+
+        Assert.assertEquals(false, this.l1.equals(null)); // NON-NULL REFERENCE MUST NOT BE EQUAL TO
+        // NULL
+        Assert.assertFalse(this.l1.equals(new Object()));
     }
 }
