@@ -6,7 +6,7 @@
 package edu.neu.ccs.cs5004.seattle.assignment9.html;
 
 /**
- * Represents the HTML element <hr>
+ * Represents the HTML element hr (Horizontal Rule)
  *
  * @author yoganandc alesyavt
  */
