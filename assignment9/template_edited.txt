@@ -1,5 +1,16 @@
 # Header at Level 1
 
+> I am a block quote line
+Identity crisis: I could either be a para inside a block
+or just a solo para
+
+<blockquote>
+<p> I am a block quote line </p>
+</blockquote>
+<p>
+Identity crisis: I could either be a para inside a block
+or just a solo para </p>
+
 Headers appear on a line of their own. A header starts with the one or more occurrences of the symbol `#` followed
 by one space followed by text *and ends with a newline. 
 Headers are section _*titles.*_ The number of `#` symbols *_indica*te_ the _nesting of *headers. 
@@ -41,4 +52,50 @@ We can nest ordered lists by adding 2 spaces followed by the same special charac
 
 You can see an example [Confused](https://media.giphy.com/media/wi9yHmX7Sztuw/giphy.gif). 
 You can read more [here](https://en.wikipedia.org/wiki/Confusion).
+
+Numbered list 
+
+1. one 
+1. two 
+  1. inner one 
+  1. inner two 
+    1. inner inner one
+    1. inner inner two
+  1. inner three
+1. three 
+
+Bullet list 
+
+* one 
+* two 
+  * inner one 
+  * inner two 
+    * inner inner one
+    * inner inner two
+  * inner three
+* three 
+
+
+Mixing lists 
+
+1. one 
+1. two 
+  * inner one 
+  * inner two 
+    1. inner inner one
+    1. inner inner two
+  * inner three
+1. three 
+
+Another one
+
+1. one 
+1. two 
+*  inner one 
+*  inner two 
+  1. inner inner one
+  1. inner inner two
+  *  inner three
+1. three 
+
 
